@@ -4,6 +4,8 @@ import Link from 'next/link';
 import Hcar from '@/app/assets/herosection/Hcar.png';
 import dropdown from '@/app/assets/herosection/arrow.png';
 import swap from '@/app/assets/herosection/Swap.png';
+import CarRentalForm from './pickDropSec';
+import PickDropSection from './pickDropSec';
 
 
 const Herosection = () => {
@@ -38,7 +40,7 @@ const Herosection = () => {
     </div>
 
     {/* div for pickup and drop off */}
-    <div className='px-[40px] py-[32px] flex flex-col lg:flex-row justify-between bg-[#F6F7F9]'>
+    {/* <div className='px-[40px] py-[32px] flex flex-col lg:flex-row justify-between bg-[#F6F7F9]'>
         <div className='lg:w-[45%] px-8 py-3 bg-white'>
             <div className='flex gap-4'>
                 <input type="radio" checked/>
@@ -116,6 +118,9 @@ const Herosection = () => {
                 </div>
             </div>
         </div>
+    </div> */}
+    <div>
+        
     </div>
     </>
   )

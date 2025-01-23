@@ -21,12 +21,21 @@
 // function builder.image(source).url()
 import React from 'react'
 import Hero from './Component/Section1'
+import Section2 from './Component/Section2'
+import Herosection from './Component/Herosection'
+import PickDropSec from './Component/pickDropSec'
 
 const page = () => {
   return (
+    <main>
     <div>
+     <Herosection/>
+     <PickDropSec  />
         <Hero/>
+        <Section2/>
+        {/* <Section2/> */}
     </div>
+    </main>
   )
 }
 

@@ -41,7 +41,7 @@ const Footer = () => {
                         <li><Link href="#">Invite a friend</Link></li>
                     </ul>
                 </div>
-                <div className='w-fit mt-10 xm:mt-0'>
+                <div className='w-fit'>
                     <h1 className='font-semibold text-[20px]'>Socials</h1>
                     <ul className='font-medium text-[rgba(19,19,19,0.6)] mt-3 space-y-4'>
                         <li><Link href="#">Discord</Link></li>

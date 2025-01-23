@@ -247,13 +247,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { client } from '@/sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
-import { FaHeart, FaUser, FaCarSide, FaCogs } from 'react-icons/fa'; // Import icons
+import { FaHeart, FaUser, FaCarSide, FaCogs } from 'react-icons/fa';
+
 
 interface IProduct {
+  originalPrice: any;
   capacity: string;
   pricePerDay: number;
   name: string;
-  title?: string; // Optional if not fetched directly
+  title?: string;
   image: {
     _type: string;
     asset: {
@@ -262,118 +264,136 @@ interface IProduct {
     };
   };
   _id: string;
-  stock?: string; // Optional if not fetched directly
-  slug?: { current: string }; // Optional
+  stock?: string;
+  slug?: { current: string };
   price: number;
-  type?: string; // Add type if available
-  fuelCapacity?: string; // Add fuelCapacity if available
-  transmission?: string; // Add transmission if available
-  seatingCapacity?: string; // Add seatingCapacity if available
-  favorite?: boolean; // Add favorite if available
+  type?: string;
+  fuelCapacity?: string;
+  transmission?: string;
+  seatingCapacity?: string;
+  favorite?: boolean;
 }
 
 const builder = imageUrlBuilder(client);
 
 function urlFor(source: any) {
   return builder.image(source).url();
+
 }
 
 export default async function Hero() {
-  const res: IProduct[] = await client.fetch(`
-    *[_type == "car"][0...4]{
-  _id,
-  _type,
-  _rev,
-  _createdAt,
-  _updatedAt,
-  name,
-  brand,
-  seatingCapacity,
-  originalPrice,
-  type,
-  pricePerDay,
-  tags,
-  transmission,
-  fuelCapacity,
-  image{
-    _type,
-    asset{
-      _ref,
-      _type
-    }
-  }
-}
 
+  const res: IProduct[] = await client.fetch(`
+    *[_type == "car" ][0..3]{
+      _id,
+      _type,
+      _rev,
+      _createdAt,
+      _updatedAt,
+      name,
+      brand,
+      seatingCapacity,
+      originalPrice,
+      type,
+      pricePerDay,
+      tags,
+      transmission,
+      fuelCapacity,
+      image{
+        _type,
+        asset{
+          _ref,
+          _type
+        }
+      }
+    }
   `);
 
   return (
-    <div className="max-w-screen-xl mx-auto px-6 py-8 bg-gray-50">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold">Popular Products</h2>
-        <Link href="/categories" className="text-blue-600 hover:underline">
-          View All
+    <div className="max-w-screen-xl mx-auto px-4 py-12 bg-gradient-to-b from-gray-50 to-white">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Popular Cars</h2>
+          <p className="text-sm text-gray-600">Discover our most sought-after vehicles</p>
+        </div>
+        <Link href="/category" 
+          className="text-sm inline-flex items-center px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+          View All Cars
         </Link>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {res.map((product) => (
           <div
             key={product._id}
-            className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg transition-shadow"
+            className="group bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all duration-300"
           >
             {/* Product Header */}
-            {/* Product Header */}
-<div className="flex justify-between items-start">
-  <h3 className="text-lg font-semibold">{product.name}</h3>
-  <button className="hover:text-red-500 transition-colors duration-200">
-    <FaHeart
-      className={`text-2xl ${
-        product.favorite
-          ? 'text-red-500' // Keep it red if favorite
-          : 'text-gray-300 hover:text-red-500' // Gray by default, red on hover
-      }`}
-    />
-  </button>
-</div>
-<p className="text-sm text-gray-500 mb-4">{product.type}</p>
+            <div className="flex justify-between items-start mb-3">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-1 group-hover:text-blue-600 transition-colors">
+                  {product.name}
+                </h3>
+                <p className="text-xs text-gray-500 capitalize">{product.type}</p>
+              </div>
+              <button className="p-1 hover:bg-gray-100 rounded-full transition-colors duration-200">
+                <FaHeart
+                  className={`text-lg ${
+                    product.favorite
+                      ? 'text-red-500'
+                      : 'text-gray-300 hover:text-red-500'
+                  }`}
+                />
+              </button>
+            </div>
+
             {/* Product Image */}
-            {product.image && product.image.asset ? (
-              <div className="relative w-full h-40">
+            <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden">
+              {product.image && product.image.asset ? (
                 <Image
                   src={urlFor(product.image).toString()}
                   alt={product.title || 'Product Image'}
                   fill
-                  className="object-contain"
+                  className="object-contain p-2"
                 />
-              </div>
-            ) : (
-              <div className="h-40 bg-gray-200 flex items-center justify-center rounded-lg">
-                <p className="text-center text-gray-600">No Image Available</p>
-              </div>
-            )}
+              ) : (
+                <div className="h-full bg-gray-200 flex items-center justify-center">
+                  <p className="text-gray-600">No Image Available</p>
+                </div>
+              )}
+            </div>
 
-            {/* Product Details */}
-            <div className="flex justify-between items-center mt-4">
-              <div className="flex space-x-2 text-gray-600">
-                <div className="flex items-center space-x-1">
-                  <FaCarSide />
-                  <span>{product.fuelCapacity || 'N/A'}</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <FaCogs />
-                  <span>{product.transmission || 'N/A'}</span>
-                </div>
-                <div className="flex items-center">
-                  <FaUser />
-                  <span>{product.seatingCapacity || 'N/A'}</span>
-                </div>
+            {/* Product Specs */}
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              <div className="flex flex-col items-center p-2 bg-gray-50 rounded-lg">
+                <FaCarSide className="text-blue-500 text-xs mb-1"/>
+                <span className="text-xs text-gray-600">{product.fuelCapacity || 'N/A'}</span>
+              </div>
+              <div className="flex flex-col items-center p-2 bg-gray-50 rounded-lg">
+                <FaCogs className="text-blue-500 text-xs mb-1"/>
+                <span className="text-xs text-gray-600">{product.transmission || 'N/A'}</span>
+              </div>
+              <div className="flex flex-col items-center p-2 bg-gray-50 rounded-lg">
+                <FaUser className="text-blue-500 text-xs mb-1"/>
+                <span className="text-xs text-gray-600">{product.seatingCapacity || 'N/A'}</span>
               </div>
             </div>
 
-            {/* Product Price and Rent Button */}
-            <div className="mt-6 flex justify-between items-center">
-              <p className="text-lg font-semibold">${product.pricePerDay}</p>
-              <Link href={`/product/${product.name}`}>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            {/* Price and CTA */}
+            <div className="flex items-center justify-between mt-auto">
+              <div>
+                <p className="text-base font-bold text-blue-600">
+                  ${product.pricePerDay}
+                  <span className="text-xs text-gray-500 ml-1"></span>
+                </p>
+                {product.originalPrice && (
+                  <p className="text-xs text-gray-400 line-through">
+                    ${product.originalPrice}
+                  </p>
+                )}
+              </div>
+              <Link href={`/detailcars/${product._id}`}>   
+                           <button className="text-xs px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
                   Rent Now
                 </button>
               </Link>
@@ -384,4 +404,3 @@ export default async function Hero() {
     </div>
   );
 }
-

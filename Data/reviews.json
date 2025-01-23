@@ -1,0 +1,140 @@
+[
+  {
+    "id": "1",
+    "name": "Alex Stanton",
+    "role": "CEO at Bukalapak",
+    "date": "21 July 2022",
+    "review": "We are very happy with the service from the MORENT App. Morent has a low price and also a large variety of cars with good and comfortable facilities. In addition, the service provided by the officers is also very friendly and very polite.",
+    "rating": 5
+  },
+  {
+    "id": "2",
+    "name": "Skylar Dias",
+    "role": "CEO at Amazon",
+    "date": "20 July 2022",
+    "review": "We are greatly helped by the services of the MORENT Application. Morent has low prices and also a wide variety of cars with good and comfortable facilities. In addition, the service provided by the officers is also very friendly and very polite.",
+    "rating": 5
+  },
+  {
+    "id": "1737464546305",
+    "name": "A",
+    "role": "customer",
+    "date": "January 21, 2025",
+    "review": "Great Service",
+    "rating": 5
+  },
+  {
+    "id": "1737469377665",
+    "name": "Aliza",
+    "role": "customer",
+    "date": "January 21, 2025",
+    "review": "Great Service.",
+    "rating": 5
+  },
+  {
+    "id": "1737469957410",
+    "name": "Aliza Faizan",
+    "role": "customer",
+    "date": "January 21, 2025",
+    "review": "Great",
+    "rating": 5
+  },
+  {
+    "id": "1737470189484",
+    "name": "Faiz",
+    "role": "Customer",
+    "date": "January 21, 2025",
+    "review": "goo job.",
+    "rating": 5
+  },
+  {
+    "id": "1737471089698",
+    "name": "Aliza",
+    "role": "customer",
+    "date": "January 21, 2025",
+    "review": "Great Service.",
+    "rating": 5
+  },
+  {
+    "id": "1737472014673",
+    "name": "Aliza",
+    "role": "customer",
+    "date": "January 21, 2025",
+    "review": "Great",
+    "rating": 5
+  },
+  {
+    "id": "1737472029804",
+    "name": "Aliza",
+    "role": "customer",
+    "date": "January 21, 2025",
+    "review": "Great",
+    "rating": 5
+  },
+  {
+    "id": "1737472283990",
+    "name": "Aliza",
+    "role": "customer",
+    "date": "January 21, 2025",
+    "review": "Great",
+    "rating": 5
+  },
+  {
+    "id": "1737472543973",
+    "name": "Aliza Faizan",
+    "role": "customer",
+    "date": "January 21, 2025",
+    "review": "Great",
+    "rating": 5
+  },
+  {
+    "id": "1737490907750",
+    "name": "AyatNoor",
+    "role": "CEO",
+    "date": "January 22, 2025",
+    "review": ".",
+    "rating": 4
+  },
+  {
+    "id": "1737571835248",
+    "name": "AyatNoor",
+    "role": "CEO",
+    "date": "January 22, 2025",
+    "review": "goo job.",
+    "rating": 5
+  },
+  {
+    "id": "1737572691413",
+    "name": "AyatNoor",
+    "role": "CEO",
+    "date": "January 23, 2025",
+    "review": "good Service.",
+    "rating": 4,
+    "avatar": "/placeholder.svg"
+  },
+  {
+    "id": "1737574122739",
+    "name": "AyatNoor",
+    "role": "CEO",
+    "date": "January 23, 2025",
+    "review": ".",
+    "rating": 5,
+    "avatar": "/placeholder.svg"
+  },
+  {
+    "id": "1737577954955",
+    "name": "Abdul Rafy",
+    "role": "customer",
+    "date": "January 23, 2025",
+    "review": "great",
+    "rating": 4
+  },
+  {
+    "id": "1737663177339",
+    "name": "Aliza",
+    "role": "CEO",
+    "date": "January 24, 2025",
+    "review": "newly add review.",
+    "rating": 5
+  }
+]
