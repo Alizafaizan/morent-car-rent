@@ -10,15 +10,15 @@ const category = {
 			options: {
 				source: "tagname",
 				unique: true,
-				slugify: (input: any) => {
+				slugify: (input:string) => {
 					return input
 						.toLowerCase()
 						.replace(/\s+/g, "-")
 						.replace(/[^\w-]+/g, "");
 				},
 			},
-			validation: (Rule: any) =>
-				Rule.custom((fields: any) => {
+			validation: (Rule:any) =>
+				Rule.custom((fields: string) => {
 					if (
 						fields !== fields.toLowerCase() ||
 						fields.split(" ").includes("")

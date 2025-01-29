@@ -5,7 +5,7 @@ import Image from "next/image"
 import { client } from "@/sanity/lib/client"
 
 interface Car {
-  favorite: any
+  favorite: string
   title: string
   _id: string
   name: string
@@ -70,8 +70,12 @@ export default function CarListingPage() {
         setSidebarData(sidebarData)
         setPriceRange(sidebarData.maxPrice)
         setLoading(false)
-      } catch (error: any) {
-        setError(error.message)
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message)
+        } else {
+          setError(String(error))
+        }
         setLoading(false)
       }
     }

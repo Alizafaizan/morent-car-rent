@@ -442,11 +442,6 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { client } from "@/sanity/lib/client";
-import fuel from "@/app/assets/section2/fuel.png";
-import stering from "@/app/assets/section2/Stering wheel.png";
-import user from "@/app/assets/section2/profile.png";
-import redheart from "@/app/assets/section2/red heart.png";
-import whiteheart from "@/app/assets/section2/transparent heart.png";
 import { urlFor } from "@/sanity/lib/image";
 import { FaCarSide, FaCogs, FaHeart, FaUser } from "react-icons/fa";
 

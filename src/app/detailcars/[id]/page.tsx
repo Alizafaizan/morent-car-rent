@@ -1,3 +1,4 @@
+"use client"
 import { Suspense } from 'react';
 import React from "react";
 import Image from "next/image";
@@ -22,12 +23,10 @@ function getImageUrl(image: any) {  if (!image?.asset?._ref) {
       return image.asset.url;
     }
     
-    const projectId = "gmtdx99w";
-    const dataset = "production";
     const ref = image.asset._ref;
     
     // Extract the dimensions and format from the asset reference
-    const [_, id, dimensions, format] = ref.split('-');
+    const [ id, dimensions, format] = ref.split('-');
     
     return `https://cdn.sanity.io/images/${projectId}/${dataset}/${id}-${dimensions}.${format}`;
   } catch (error) {
@@ -187,12 +186,10 @@ async function CarDetailsContent({ params }: { params: Params }) {
                   )}
                 </div>
 
-                <Link href="/billing">
-                
+                <Link href={`/rentalBooking/${car._id}`}>
                   <button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-6 py-3 font-medium transition-colors">
                     Rent Now
                   </button>
-                 
                 </Link>
               </div>
             </div>
@@ -215,7 +212,7 @@ async function CarDetailsContent({ params }: { params: Params }) {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {relatedCars.map((relatedCar: any) => {
+              {relatedCars.map((relatedCar:any) => {
                 const relatedCarImageUrl = relatedCar.image?.asset?.url || getImageUrl(relatedCar.image);
                 
                 return (
@@ -275,7 +272,7 @@ async function CarDetailsContent({ params }: { params: Params }) {
                         ${relatedCar.pricePerDay}
                         <span className="text-sm text-gray-500"></span>
                       </h4>
-                      <Link href="/billing">
+                      <Link href={`/rentalSummery/${car._id}`}>
                         <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium transition-colors">
                           Rent Now
                         </button>

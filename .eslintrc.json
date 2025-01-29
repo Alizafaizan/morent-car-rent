@@ -1,3 +1,26 @@
+// {
+//   "extends": ["next/core-web-vitals", "next/typescript"]
+
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "react", "react-hooks", "import"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals"
+  ],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "warn", // Show warnings instead of errors for `any`
+    "import/no-anonymous-default-export": "off", // Disable warnings for anonymous default exports
+    "react/prop-types": "off" // Not required for TypeScript projects
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }
+

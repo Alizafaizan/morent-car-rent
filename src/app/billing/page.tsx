@@ -309,7 +309,7 @@ const page = () => {
 
             <div className="w-fit mt-4">
               <button className="bg-[rgba(53,99,233,100%)] text-white px-6 py-3 rounded-lg">
-              <Link href={"/dashboard"}>Rent Now</Link>
+              <Link href={"/CheckoutPage"}>Rent Now</Link>
               </button>
             </div>
 

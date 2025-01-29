@@ -1,14 +1,14 @@
 "use client"
 
-import type React from "react"
-import { useState } from "react"
+import React from "react"
+import { useState, useCallback } from "react"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ChevronDown, Repeat } from "lucide-react"
+import { ChevronDown, Repeat, ArrowUpDown } from "lucide-react"
 import { format } from "date-fns"
 
 type RentalType = "pickup" | "dropoff"
@@ -18,9 +18,9 @@ interface LocationData {
 }
 
 const locationData: LocationData = {
-  "New York": ["Manhattan", "Brooklyn", "Queens"],
-  "Los Angeles": ["Downtown", "Hollywood", "Santa Monica"],
-  Chicago: ["The Loop", "River North", "Wicker Park"],
+  "Karachi": ["TariqRoad", "ShahFaisal", "Numaish"],
+  "Lahore": ["Downtown", "Hollywood", "Santa Monica"],
+  "Multan": ["The Loop", "River North", "Wicker Park"],
 }
 
 const PickDropSection: React.FC = () => {
@@ -33,6 +33,18 @@ const PickDropSection: React.FC = () => {
   const [dropoffLocation, setDropoffLocation] = useState<string>("")
   const [dropoffDate, setDropoffDate] = useState<Date>()
   const [dropoffTime, setDropoffTime] = useState<string>("")
+  const [isMobile, setIsMobile] = useState<boolean>(typeof window !== "undefined" ? window.innerWidth <= 1024 : false)
+
+  // Handle responsive design
+  const checkMobileView = useCallback(() => {
+    setIsMobile(window.innerWidth <= 1024)
+  }, [])
+
+  // Add event listener for window resize
+  React.useEffect(() => {
+    window.addEventListener('resize', checkMobileView)
+    return () => window.removeEventListener('resize', checkMobileView)
+  }, [checkMobileView])
 
   const handleSwap = () => {
     setPickupCity(dropoffCity)
@@ -57,8 +69,15 @@ const PickDropSection: React.FC = () => {
     const setTime = isPickup ? setPickupTime : setDropoffTime
 
     return (
-      <div className="lg:w-[45%] px-8 py-3 bg-white rounded-lg shadow-md">
-        <RadioGroup value={rentalType} onValueChange={(value) => setRentalType(value as RentalType)}>
+      <div className={`
+        ${isMobile ? 'w-full mb-4' : 'lg:w-[45%]'} 
+        px-4 py-3 bg-white rounded-lg shadow-md
+      `}>
+        <RadioGroup 
+          value={rentalType} 
+          onValueChange={(value) => setRentalType(value as RentalType)}
+          className="mb-4"
+        >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value={type} id={type} />
             <Label htmlFor={type} className="font-bold capitalize">
@@ -67,11 +86,14 @@ const PickDropSection: React.FC = () => {
           </div>
         </RadioGroup>
 
-        <div className="flex justify-between mt-4 space-x-4">
-          <div className="flex-1">
+        <div className={`
+          ${isMobile ? 'flex-col' : 'flex'} 
+          justify-between space-y-4 ${!isMobile && 'space-x-4'}
+        `}>
+          <div className="flex-1 space-y-2">
             <Label className="font-bold">Location</Label>
             <Select value={city} onValueChange={setCity}>
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select your city" />
               </SelectTrigger>
               <SelectContent>
@@ -83,8 +105,8 @@ const PickDropSection: React.FC = () => {
               </SelectContent>
             </Select>
             {city && (
-              <Select value={location} onValueChange={setLocation} >
-                <SelectTrigger>
+              <Select value={location} onValueChange={setLocation}>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select your location" />
                 </SelectTrigger>
                 <SelectContent>
@@ -98,13 +120,18 @@ const PickDropSection: React.FC = () => {
             )}
           </div>
 
-          <div className="w-[2px] h-10 bg-[#C3D4E9] self-center"></div>
+          {!isMobile && (
+            <div className="w-[2px] h-10 bg-[#C3D4E9] self-center"></div>
+          )}
 
-          <div className="flex-1">
+          <div className="flex-1 space-y-2">
             <Label className="font-bold">Date</Label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full justify-start text-left font-normal">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start text-left font-normal"
+                >
                   {date ? format(date, "PPP") : <span>Pick a date</span>}
                   <ChevronDown className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
@@ -115,12 +142,14 @@ const PickDropSection: React.FC = () => {
             </Popover>
           </div>
 
-          <div className="w-[2px] h-10 bg-[#C3D4E9] self-center"></div>
+          {!isMobile && (
+            <div className="w-[2px] h-10 bg-[#C3D4E9] self-center"></div>
+          )}
 
-          <div className="flex-1">
+          <div className="flex-1 space-y-2">
             <Label className="font-bold">Time</Label>
             <Select value={time} onValueChange={setTime}>
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select your time" />
               </SelectTrigger>
               <SelectContent>
@@ -138,11 +167,25 @@ const PickDropSection: React.FC = () => {
   }
 
   return (
-    <div className="px-[40px] py-[32px] flex flex-col lg:flex-row justify-between items-center bg-[#F6F7F9] space-y-4 lg:space-y-0 lg:space-x-4">
+    <div className={`
+      px-4 py-8 
+      ${isMobile ? 'flex-col' : 'flex-row'} 
+      flex justify-between items-center 
+      bg-[#F6F7F9] 
+      space-y-4 ${!isMobile && 'space-x-4'}
+    `}>
       <RentalSection type="pickup" />
       <div className="flex items-center justify-center">
-        <Button onClick={handleSwap} size="icon" className="bg-[rgba(53,99,233,100%)] hover:bg-[rgba(53,99,233,80%)]">
-          <Repeat className="h-6 w-6" />
+        <Button 
+          onClick={handleSwap} 
+          size="icon" 
+          className={`
+            ${isMobile ? 'mb-4' : 'mr-0'} 
+            bg-[rgba(53,99,233,100%)] 
+            hover:bg-[rgba(53,99,233,80%)]
+          `}
+        >
+          {isMobile ? <ArrowUpDown className="h-6 w-6" /> : <Repeat className="h-6 w-6" />}
         </Button>
       </div>
       <RentalSection type="dropoff" />
@@ -150,5 +193,4 @@ const PickDropSection: React.FC = () => {
   )
 }
 
-export default PickDropSection
-
+export default PickDropSection;

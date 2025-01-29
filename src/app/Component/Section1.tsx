@@ -242,7 +242,7 @@
 // }
 
 // export default Section1
-
+"use client"
 import Link from 'next/link';
 import Image from 'next/image';
 import { client } from '@/sanity/lib/client';
@@ -251,7 +251,7 @@ import { FaHeart, FaUser, FaCarSide, FaCogs } from 'react-icons/fa';
 
 
 interface IProduct {
-  originalPrice: any;
+  originalPrice: string;
   capacity: string;
   pricePerDay: number;
   name: string;

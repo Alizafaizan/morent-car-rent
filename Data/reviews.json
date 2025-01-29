@@ -136,5 +136,13 @@
     "date": "January 24, 2025",
     "review": "newly add review.",
     "rating": 5
+  },
+  {
+    "id": "1738102783951",
+    "name": "Aliza",
+    "role": "CEO",
+    "date": "January 29, 2025",
+    "review": "newly add Comment.",
+    "rating": 5
   }
 ]

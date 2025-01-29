@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import { FaStar } from "react-icons/fa"
 import { addReview } from "../addReveiw"
 
