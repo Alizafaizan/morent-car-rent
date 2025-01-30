@@ -242,6 +242,7 @@
 'use client';
 import PaymentSuccessPage from '@/app/success/page';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -287,6 +288,8 @@ export default function RentalPayment() {
     }
   }, [searchParams]);
 
+  
+
   if (!rentalDetails) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -296,6 +299,7 @@ export default function RentalPayment() {
       </div>
     );
   }
+  
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -343,17 +347,21 @@ export default function RentalPayment() {
         </div>
 
         {/* Add payment form here */}
-        <Button 
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-          onClick={() => {
-            // Add your payment processing logic here
-            console.log('Processing payment...', rentalDetails);
-          }}
-        >
-          Complete Payment
-        </Button>
-        <PaymentSuccessPage/>
+        <Link href="/PaymentSuccesPage">
+          <Button 
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            onClick={() => {
+              // Add your payment processing logic here
+              console.log('Processing payment...', rentalDetails);
+            }}
+          >
+        
+
+            Complete Payment
+          </Button>
+          </Link>
+         
       </div>
-    </div>
+      </div>
   );
 }

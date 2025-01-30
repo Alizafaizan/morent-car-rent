@@ -160,7 +160,7 @@ export default function RentalDetails({ car }: RentalDetailsProps) {
         const encodedDetails = encodeURIComponent(JSON.stringify(rentalDetails));
         
         // Navigate to payment page with rental details
-        router.push(`/rentalPayment/${car._id}?details=${encodedDetails}`);
+        router.push(`/rentalBooking/${car._id}?details=${encodedDetails}`);
       };
     
   return (
@@ -362,7 +362,7 @@ export default function RentalDetails({ car }: RentalDetailsProps) {
         className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-4"
         onClick={handleProceedToPayment}
       >
-        Confirm Booking
+        Payment To Proceed
       </Button>
       </div>
     </div>

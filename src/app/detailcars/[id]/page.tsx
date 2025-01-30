@@ -186,7 +186,7 @@ async function CarDetailsContent({ params }: { params: Params }) {
                   )}
                 </div>
 
-                <Link href={`/rentalBooking/${car._id}`}>
+                <Link href={`/rentalSummery/${car._id}`}>
                   <button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-6 py-3 font-medium transition-colors">
                     Rent Now
                   </button>
@@ -252,18 +252,18 @@ async function CarDetailsContent({ params }: { params: Params }) {
                       )}
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2 mb-4 text-sm">
-                      <div className="flex items-center gap-1 text-gray-600">
-                        <Image src={fuel} alt="fuel" width={16} height={16} />
-                        <span>{relatedCar.fuelCapacity}</span>
+                    <div className="grid grid-cols-3 mb-4 text-sm">
+                      <div className="flex items-center text-gray-600">
+                        <Image src={fuel} alt="fuel" width={14} height={14} />
+                        <span className='text-sm'>{relatedCar.fuelCapacity}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-gray-600">
-                        <Image src={stering} alt="transmission" width={16} height={16} />
-                        <span>{relatedCar.transmission}</span>
+                      <div className="flex items-center text-gray-600">
+                        <Image src={stering} alt="transmission" width={14} height={14} />
+                        <span className='text-sm'>{relatedCar.transmission}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-gray-600">
-                        <Image src={user} alt="capacity" width={16} height={16} />
-                        <span>{relatedCar.seatingCapacity}</span>
+                      <div className="flex items-center text-gray-600">
+                        <Image src={user} alt="capacity" width={14} height={14} />
+                        <span className='text-sm'>{relatedCar.seatingCapacity}</span>
                       </div>
                     </div>
 
