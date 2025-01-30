@@ -1,33 +1,63 @@
+
+
 "use client";
 
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { client } from '@/sanity/lib/client';
-import Link from 'next/link';
-import Image from 'next/image';
-
-interface CarDetails {
-  _id: string;
-  name: string;
-  brand: string;
-  image: {
-    asset: {
-      url: string;
-    };
-  };
-  pricePerDay: number;
-}
+import { useEffect, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
+import { client } from "@/sanity/lib/client";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function RentalSuccessPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
+  interface CarDetails {
+    _id: string;
+    name: string;
+    brand: string;
+    pricePerDay: number;
+    image: {
+      asset: {
+        url: string;
+      };
+    };
+  }
+  
   const [carDetails, setCarDetails] = useState<CarDetails | null>(null);
+  interface RentalDetails {
+    customerInfo: {
+      name: string;
+      phone: string;
+      address: string;
+      city: string;
+    };
+    pickupDetails: {
+      location: string;
+      date: string;
+      time: string;
+    };
+    returnDetails: {
+      location: string;
+      date: string;
+      time: string;
+    };
+  }
+
+  const [rentalDetails, setRentalDetails] = useState<RentalDetails | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCarDetails = async () => {
       try {
-        const car = await client.fetch(`
-          *[_type == "car" && _id == $id][0]{
+        // Get rental details from URL
+        const details = searchParams.get("details");
+        if (details) {
+          setRentalDetails(JSON.parse(decodeURIComponent(details)));
+        }
+
+        // Fetch car details from Sanity
+        const car = await client.fetch(
+          `*[_type == "car" && _id == $id][0]{
             _id,
             name,
             brand,
@@ -37,11 +67,12 @@ export default function RentalSuccessPage() {
                 url
               }
             }
-          }
-        `, { id: params.id });
+          }`,
+          { id: params.id }
+        );
         setCarDetails(car);
       } catch (error) {
-        console.error('Error fetching car details:', error);
+        console.error("Error fetching details:", error);
       } finally {
         setLoading(false);
       }
@@ -50,7 +81,7 @@ export default function RentalSuccessPage() {
     if (params.id) {
       fetchCarDetails();
     }
-  }, [params.id]);
+  }, [params.id, searchParams]);
 
   if (loading) {
     return (
@@ -68,6 +99,7 @@ export default function RentalSuccessPage() {
       <div className="max-w-3xl mx-auto">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="p-6">
+            {/* Success message and icon */}
             <div className="flex items-center justify-center mb-8">
               <div className="bg-green-100 rounded-full p-3">
                 <svg
@@ -90,9 +122,10 @@ export default function RentalSuccessPage() {
               Booking Confirmed!
             </h2>
 
-            {carDetails && (
+            {carDetails && rentalDetails && (
               <div className="border rounded-lg p-6 mb-8">
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+                  {/* Car Image */}
                   <div className="relative w-full md:w-64 h-48 flex-shrink-0">
                     <Image
                       src={carDetails.image.asset.url}
@@ -102,6 +135,8 @@ export default function RentalSuccessPage() {
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   </div>
+
+                  {/* Rental Details */}
                   <div className="text-center md:text-left">
                     <h3 className="text-xl font-bold text-gray-900">
                       {carDetails.brand} {carDetails.name}
@@ -109,14 +144,42 @@ export default function RentalSuccessPage() {
                     <p className="text-gray-600 mt-2">
                       Price per day: ${carDetails.pricePerDay}
                     </p>
+                    
+                    {/* Customer Info */}
+                    <div className="mt-4">
+                      <h4 className="font-bold">Customer Details:</h4>
+                      <p>Name: {rentalDetails.customerInfo.name}</p>
+                      <p>Phone: {rentalDetails.customerInfo.phone}</p>
+                      <p>Address: {rentalDetails.customerInfo.address}</p>
+                      <p>City: {rentalDetails.customerInfo.city}</p>
+                    </div>
+
+                    {/* Rental Period */}
+                    <div className="mt-4">
+                      <h4 className="font-bold">Rental Period:</h4>
+                      <p>
+                        <span className="font-medium">Pickup:</span>{" "}
+                        {rentalDetails.pickupDetails?.location} on{" "}
+                        {rentalDetails.pickupDetails?.date} at{" "}
+                        {rentalDetails.pickupDetails?.time}
+                      </p>
+                      <p>
+                        <span className="font-medium">Return:</span>{" "}
+                        {rentalDetails.returnDetails?.location} on{" "}
+                        {rentalDetails.returnDetails?.date} at{" "}
+                        {rentalDetails.returnDetails?.time}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             )}
 
+            {/* Action Buttons */}
             <div className="text-center">
               <p className="text-gray-600 mb-8">
-                Thank you for your booking! We have sent the confirmation details to your email.
+                Thank you for your booking! We have sent the confirmation
+                details to your email.
               </p>
 
               <div className="space-y-4">
@@ -124,10 +187,10 @@ export default function RentalSuccessPage() {
                   href="/dashboard"
                   className="block w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-150"
                 >
-                  View Booking Details
+                  Your Booking Details
                 </Link>
                 <Link
-                  href="http://localhost:3000"
+                  href="/"
                   className="block w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition duration-150"
                 >
                   Return to Home
