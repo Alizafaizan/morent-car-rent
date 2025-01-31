@@ -11,6 +11,7 @@ import stering from "@/app/assets/section1/Stering wheel.png";
 import user from "@/app/assets/section1/profile.png";
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 import ReviewsClient from '@/app/actions/reviews/reviews-client';
+import { dataset, projectId } from '@/sanity/env';
 
 // Helper functions remain the same
 function getImageUrl(image: any) {  if (!image?.asset?._ref) {

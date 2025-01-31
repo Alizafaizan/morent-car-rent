@@ -25,7 +25,7 @@ const Herosection = () => {
           <p className='font-medium text-sm md:text-[14px] text-white md:w-64 mt-3'>
             Ease of doing a car rental safely and reliably. Of course at a low price.
           </p>
-          <Link href="/billing">
+          <Link href="/rentalBooking">
             <button className='
               bg-[rgba(53,99,233,100%)] 
               px-6 md:px-8 
@@ -69,7 +69,7 @@ const Herosection = () => {
           <p className='font-medium text-sm md:text-[14px] text-white md:w-64 mt-3'>
             Providing cheap car rental services and safe and comfortable facilities.
           </p>
-          <Link href="/billing">
+          <Link href="/rentalBooking">
             <button className='
               bg-[rgba(84,166,255,100%)] 
               px-6 md:px-8 
@@ -98,3 +98,4 @@ const Herosection = () => {
 }
 
 export default Herosection
+
