@@ -248,6 +248,7 @@ import Image from 'next/image';
 import { client } from '@/sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
 import { FaHeart, FaUser, FaCarSide, FaCogs } from 'react-icons/fa';
+import cars from '@/sanity/schemaTypes/cars';
 
 
 interface IProduct {
@@ -316,7 +317,7 @@ export default async function Hero() {
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Popular Cars</h2>
           <p className="text-sm text-gray-600">Discover our most sought-after vehicles</p>
         </div>
-        <Link href="/category" 
+        <Link href="/category"
           className="text-sm inline-flex items-center px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
           View All Cars
         </Link>
