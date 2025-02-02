@@ -64,13 +64,10 @@
 
 // export default Header
 "use client";
-
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { client } from '@/sanity/lib/client'; // Make sure this path is correct
 
 // Icons
 import logoimg from '@/app/assets/header/Logo image.png';
@@ -79,9 +76,10 @@ import filter from '@/app/assets/header/filter.png';
 import heart from '@/app/assets/header/heart.png';
 import noti from '@/app/assets/header/Notification.png';
 import setting from '@/app/assets/header/Settings.png';
+import ProductSearchResults from '../search/page';
 
-interface Product {
-  _id: string;
+type Product = {
+  id: number;
   name: string;
   type: string;
   brand?: string;
@@ -90,132 +88,185 @@ interface Product {
   transmission: string;
   seating_capacity: string;
   price_per_day: string;
-  mainImage: string;
+  image_url: string;
   tags: string[];
-}
+};
 
-function Header() {
-  const router = useRouter();
+const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Fetch all products from Sanity on component mount
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const query = `*[_type == "car"] {
-        _id,
-        name,
-        type,
-        brand,
-        fuel_capacity,
-        transmission,
-        seating_capacity,
-        price_per_day,
-        "mainImage": mainImage.asset->url,
-        tags
-      }`;
-
-      try {
-        const data = await client.fetch(query);
-        setProducts(data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
+  // Transition configurations
+  const dropdownVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        type: "spring", 
+        stiffness: 300, 
+        damping: 20 
       }
-    };
+    },
+    exit: { 
+      opacity: 0, 
+      y: -10,
+      transition: { 
+        duration: 0.2 
+      }
+    }
+  };
 
-    fetchProducts();
+  // Mock product data
+  useEffect(() => {
+    const mockProducts: Product[] = [
+      // ... your existing product list
+      {"id":1,"name":"Koenigsegg","type":"Sport","fuel_capacity":"90L","transmission":"Manual","seating_capacity":"2 People","price_per_day":"$99.00","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcar.11698147.jpg&w=640&q=75","tags":["popular"]},
+      {"id":2,"name":"Nissan GT-R","type":"Sport","fuel_capacity":"80L","transmission":"Manual","seating_capacity":"2 People","price_per_day":"$80.00","original_price":"$100.00","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcar(1).cab606a9.jpg&w=640&q=75","tags":["popular"]},
+      {"id":3,"name":"Rolls-Royce","type":"Sedan","fuel_capacity":"70L","transmission":"Manual","seating_capacity":"4 People","price_per_day":"$96.00","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(2).bd07489a.jpg&w=1200&q=75","tags":["popular"]},
+      {"id":4,"name":"Nissan GT-R","type":"Sport","fuel_capacity":"80L","transmission":"Manual","seating_capacity":"2 People","price_per_day":"$80.00","original_price":"$100.00","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcar(1).cab606a9.jpg&w=1200&q=75","tags":["popular"]},
+      {"id":5,"name":"Tesla Model 3","type":"Electric","fuel_capacity":"100kWh","transmission":"Manual","seating_capacity":"5 seats","price_per_day":"$100.00/day","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(13).37182fc4.jpg&w=1200&q=75","tags":["recommended"]},
+      {"id":6,"name":"Ford Mustang","type":"Gasoline","fuel_capacity":"60L","transmission":"Manual","seating_capacity":"4 seats","price_per_day":"$80.00/day","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(14).5f4e5799.jpg&w=1200&q=75","tags":["recommended"]},
+      {"id":7,"name":"BMW X5","type":"Diesel","fuel_capacity":"70L","transmission":"Manual","seating_capacity":"7 seats","price_per_day":"$150.00/day","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(15).5f4e5799.jpg&w=1200&q=75","tags":["recommended"]},{"id":8,"name":"Audi A6","type":"Hybrid","fuel_capacity":"50L","transmission":"Manual","seating_capacity":"5 seats"
+      ,"price_per_day":"$120.00/day","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(16).fc285c8d.jpg&w=1200&q=75","tags":["recommended"]},
+      {"id":9,"name":"Mercedes-Benz C-Class","brand":"Mercedes","type":"Gasoline","fuel_capacity":"65L","transmission":"Manual","seating_capacity":"5 seats","price_per_day":"$140.00/day","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(17).574834dc.jpg&w=1200&q=75","tags":["recommended"]},
+      {"id":10,"name":"Porsche 911","brand":"Porsche","type":"Gasoline","fuel_capacity":"60L","transmission":"Manual","seating_capacity":"4 seats","price_per_day":"$200.00/day","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(18).1b97b4cf.jpg&w=1200&q=75","tags":["recommended"]},
+      {"id":11,"name":"Chevrolet Camaro","brand":"Chevrolet","type":"Gasoline","fuel_capacity":"70L","transmission":"Manual","seating_capacity":"4 seats","price_per_day":"$110.00/day","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(19).547db9f7.jpg&w=1200&q=75","tags":["recommended"]},
+      {"id":12,"name":"Nissan Altima","brand":"Nissan","type":"Hybrid","fuel_capacity":"50L","transmission":"Manual","seating_capacity":"5 seats","price_per_day":"$90.00/day","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(20).1b97b4cf.jpg&w=1200&q=75","tags":["recommended"]},
+      {"id":13,"name":"Rolls-Royce","type":"SUV","fuel_capacity":"70L","transmission":"Manual","seating_capacity":"6 People","price_per_day":"$72.00","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(17).574834dc.jpg&w=1200&q=75","tags":["recommended"]},
+      {"id":14,"name":"CR-V","type":"SUV","fuel_capacity":"80L","transmission":"Manual","seating_capacity":"6 People","price_per_day":"$80.00","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(15).5f4e5799.jpg&w=1200&q=75","tags":["recommended"]},
+      {"id":15,"name":"All New Terlos","type":"SUV","fuel_capacity":"90L","transmission":"Manual","seating_capacity":"6 People","price_per_day":"$74.00","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(16).fc285c8d.jpg&w=1200&q=75","tags":["recommended"]},
+      {"id":16,"name":"MG ZX Exclusive","type":"Hatchback","fuel_capacity":"90L","transmission":"Manual","seating_capacity":"2 People","price_per_day":"$99.00","image_url":"https://car-rental-website-five.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCar(15).5f4e5799.jpg&w=1200&q=75","tags":["recommended"]}
+    ];
+    setProducts(mockProducts);
   }, []);
 
+  // Enhanced search function with fuzzy matching
   const performSearch = (query: string) => {
-    if (!query.trim()) {
+    if (!query) {
       setSearchResults([]);
       setIsSearching(false);
       return;
     }
 
-    const results = products.filter(product => {
-      const searchTerm = query.toLowerCase();
-      return (
-        product.name.toLowerCase().includes(searchTerm) ||
-        product.type.toLowerCase().includes(searchTerm) ||
-        (product.brand?.toLowerCase().includes(searchTerm) ?? false) ||
-        (product.tags?.some(tag => tag.toLowerCase().includes(searchTerm)) ?? false)
-      );
-    });
+    const results = products.filter(product => 
+      product.name.toLowerCase().includes(query.toLowerCase()) ||
+      product.type.toLowerCase().includes(query.toLowerCase()) ||
+      product.brand?.toLowerCase().includes(query.toLowerCase()) ||
+      product.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+    );
 
     setSearchResults(results);
-    setIsSearching(true);
+    setIsSearching(results.length > 0);
   };
 
+  // Handle search input changes with debounce
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
-    performSearch(query);
+    
+    // Optional: Add debounce for performance
+    const timeoutId = setTimeout(() => {
+      performSearch(query);
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
   };
 
+  // Handle search submission
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     performSearch(searchQuery);
   };
 
+  // Handle selecting a search result
   const handleResultSelect = (product: Product) => {
     setSearchQuery(product.name);
     setIsSearching(false);
-    router.push(`/detailcars/${product._id}`);
+    // Optional: Navigation logic
   };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchInputRef.current && 
+        !searchInputRef.current.contains(event.target as Node)
+      ) {
+        setIsSearching(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="bg-white shadow-sm">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          <Link href="/" className="text-[#3563E9] font-bold text-2xl">
+      <div className='container mx-auto px-4 py-4'>
+        <div className='flex justify-between items-center'>
+          {/* Logo */}
+          <Link href="/" className='text-[#3563E9] font-bold text-2xl'>
             MORENT
           </Link>
 
-          <div className="relative w-1/2 max-w-xl" ref={searchInputRef}>
-            <form onSubmit={handleSearchSubmit} className="flex items-center bg-gray-100 rounded-full overflow-hidden">
-              <button type="submit" className="p-2">
-                <Image src={searchlogo} alt="search" width={20} height={20} />
+          {/* Search Bar */}
+          <div className='relative w-1/2 max-w-xl' ref={searchInputRef}>
+            <form 
+              onSubmit={handleSearchSubmit} 
+              className='flex items-center bg-gray-100 rounded-full overflow-hidden'
+            >
+              <button type="submit" className='p-2'>
+                <Image 
+                  src={searchlogo} 
+                  alt='search' 
+                  width={20} 
+                  height={20} 
+                />
               </button>
               
               <input 
                 type="text" 
                 value={searchQuery}
                 onChange={handleSearchChange}
-                placeholder="Search cars..." 
-                className="flex-grow bg-transparent p-2 outline-none"
+                placeholder='Search cars...' 
+                className='flex-grow bg-transparent p-2 outline-none'
               />
               
-              <button type="button" className="p-2">
-                <Image src={filter} alt="filter" width={20} height={20} />
-              </button>
+              <Link href={`/search=${encodeURIComponent(searchQuery)}`} className='p-2'>
+                <Image src={filter} alt='filter' width={20} height={20}/>
+              </Link>
             </form>
 
+            {/* Search Results Dropdown with Framer Motion */}
             <AnimatePresence>
               {isSearching && searchResults.length > 0 && (
                 <motion.div 
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
+                  variants={dropdownVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
                   className="absolute top-full left-0 right-0 mt-2 bg-white border rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto"
                 >
                   {searchResults.map((product) => (
                     <motion.div 
-                      key={product._id}
+                      key={product.id}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className="flex items-center p-3 hover:bg-gray-100 cursor-pointer"
                       onClick={() => handleResultSelect(product)}
                     >
                       <Image
-                        src={product.mainImage}
-                        alt={product.name}
+                        src={product.image_url} 
+                        alt={product.name} 
                         width={40}
                         height={40}
-                        className="object-contain p-2"
+                        className=" object-contain p-2"
                       />
                       <div>
                         <h3 className="font-bold text-lg">{product.name}</h3>
@@ -228,25 +279,27 @@ function Header() {
               )}
             </AnimatePresence>
           </div>
+        
 
-          <div className="flex items-center space-x-4">
-            <Link href="#" className="hover:bg-gray-100 p-2 rounded-full transition">
-              <Image src={heart} alt="favorites" width={24} height={24} />
+          {/* Navigation Icons */}
+          <div className='flex items-center space-x-4'>
+            <Link href="#" className='hover:bg-gray-100 p-2 rounded-full transition'>
+              <Image src={heart} alt='favorites' width={24} height={24} />
             </Link>
-            <Link href="#" className="hover:bg-gray-100 p-2 rounded-full transition">
-              <Image src={noti} alt="notifications" width={24} height={24} />
+            <Link href="#" className='hover:bg-gray-100 p-2 rounded-full transition'>
+              <Image src={noti} alt='notifications' width={24} height={24} />
             </Link>
-            <Link href="#" className="hover:bg-gray-100 p-2 rounded-full transition">
-              <Image src={setting} alt="settings" width={24} height={24} />
+            <Link href="#" className='hover:bg-gray-100 p-2 rounded-full transition'>
+              <Image src={setting} alt='settings' width={24} height={24} />
             </Link>
-            <Link href="/dashboard" className="hover:bg-gray-100 p-2 rounded-full transition">
-              <Image src={logoimg} alt="profile" width={32} height={32} className="rounded-full" />
+            <Link href="/dashboard" className='hover:bg-gray-100 p-2 rounded-full transition'>
+              <Image src={logoimg} alt='profile' width={32} height={32} className='rounded-full' />
             </Link>
           </div>
         </div>
       </div>
     </header>
   );
-}
+};
 
 export default Header;
