@@ -30,7 +30,7 @@ const page = () => {
     <main>
     <div>
      <Herosection/>
-     <PickDropSec  />
+     {/* <PickDropSec  /> */}
         <Hero/>
         <Section2/>
         {/* <Section2/> */}
