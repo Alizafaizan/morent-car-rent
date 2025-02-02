@@ -12,7 +12,7 @@ const nextConfig = {
         },
         {
           protocol: "https",
-          hostname: "car-rental-website-five.vercel.app",
+          hostname: "morent-car-rent-ux9i.vercel.app",
           pathname: "/_next/image/**",
         },
       ],
