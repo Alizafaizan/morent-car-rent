@@ -10,6 +10,11 @@ const nextConfig = {
           hostname: 'cdn.sanity.io',
           pathname: '/images/**',
         },
+        {
+          protocol: "https",
+          hostname: "car-rental-website-five.vercel.app",
+          pathname: "/_next/image/**",
+        },
       ],
     },
   };
