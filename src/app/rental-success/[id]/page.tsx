@@ -182,13 +182,13 @@ export default function RentalSuccessPage() {
                 details to your email.
               </p>
 
-              <div className="space-y-4">
+              {/* <div className="space-y-4">
                 <Link
                   href="/dashboard"
                   className="block w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-150"
                 >
                   Your Booking Details
-                </Link>
+                </Link> */}
                 <Link
                   href="/"
                   className="block w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition duration-150"
@@ -200,6 +200,6 @@ export default function RentalSuccessPage() {
           </div>
         </div>
       </div>
-    </div>
+    // </div>
   );
 }

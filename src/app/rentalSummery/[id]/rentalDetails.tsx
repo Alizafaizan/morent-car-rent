@@ -362,7 +362,7 @@ export default function RentalDetails({ car }: RentalDetailsProps) {
         className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-4"
         onClick={handleProceedToPayment}
       >
-        Payment To Proceed
+        Rent Now
       </Button>
       </div>
     </div>

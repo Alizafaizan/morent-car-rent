@@ -217,7 +217,7 @@ export default function RentalPaymentPage() {
               type="submit"
               className="bg-blue-600 text-white px-6 py-3 rounded-lg"
             >
-              Rent Now
+              Pay Now
             </button>
           </div>
         </form>

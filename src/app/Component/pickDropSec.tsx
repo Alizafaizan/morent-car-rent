@@ -275,7 +275,7 @@ const PickDropSection: React.FC = () => {
     const setTime = isPickup ? setPickupTime : setDropoffTime;
 
     return (
-      <div className="w-full lg:w-[45%] px-4 py-3 bg-white rounded-lg shadow-md">
+      <div className="lg:w-[45%] px-4 py-3 bg-white rounded-lg shadow-md">
         <RadioGroup
           value={rentalType}
           onValueChange={(value) =>
